@@ -1,0 +1,38 @@
+Ej 1:
+El programa devuelve con el echo $? un 5 que es el valor del exit.
+
+Al suspender el programa con ctrl + c, y devolver el valor de exit me da un
+valor diferente al 5 del programa debido a que no finalizó correctamente (valor 130).
+
+Ej 2:
+Al compilar el programa queda en un bucle infinito y no termina, se finaliza cuando
+desde otro terminal se ejecuta "kill -SIGKILL" y el pid del programa.
+En el terminal donde estaba el bucle infinito aparece un mensaje que el programa
+se finalizó "Killed"
+
+Ej 3:
+Al ejecutar sig02.c con SIGTSTP como argumento del signal y ejecutar el programa
+y al tratar de finalizarlo con  CTRL+Z, el programa no finaliza porque lo omite
+ya que SIGTSTP no tiene control sobre la señal.
+Si se finaliza con un CTRL+C el programa no devuelve ningún error ni mensaje.
+
+Ej 4:   
+El programa ignora cualquier controlador de señal y termina aún así el programa
+con la función kill -SIGKILL PID.
+
+Ej 5:
+Con el argumento de SIGUSR1 el controlador de señal no termina la señal y me devuelve el "Me rehuso a terminar"
+cada vez que intento finalizar el proceso. 
+Si se usa el comando kill -SIGKILL PID el proceso se finaliza.
+
+Ej 6:
+Cada padre crea un hijo, tiene una espera activa y luego son eliminados cada
+uno con la función KILL
+
+Ej 7:
+El hijo se crea, espera 2 seg y envia un exit 0. Luego el padre envía la 
+señal para terminar sin importar si hay espera activa  o no y termina
+el proceso ya con el exit 0.
+
+
+
