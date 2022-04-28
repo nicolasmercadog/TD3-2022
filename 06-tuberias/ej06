@@ -1,0 +1,11 @@
+Al ejecutar ls / | head -3 | tail -1 > myoutput en la consola podemos separar los resultados de:
+
+ls / muestra todos los archivos que hay en la partición /
+head -3 muestra a partir del 3 elemento que hay en la partición o carpeta
+tail -1 muestra solo 1 elemento de todos los que se buscaron
+
+Luego se ejecuta 
+
+cat myoutput que muestra en pantalla el contenido de myoutput
+
+Se adjunta una captura de pantalla con el resultado obtenido.

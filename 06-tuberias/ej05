@@ -1,0 +1,11 @@
+Se ha propuesto buscar la palabra "network" en archivos o carpetas.
+Agregué la palabra network en el archivo pipe04.c y las que aparecen en este archivo
+En el terminal hago que ls me muestre todos los archivos con extensión .c y uso la función grep para que se busque sólo la palabra network, por lo cual quedará 
+ls -l *c | grep "network" *
+
+ls -l *.c me muestra todos los archivos con terminación .c
+| me permite concatenar dos funciones
+grep "network" * busca todas las coincidencias con la palabra "network"
+
+Los resultados se ven en la captura de pantalla
+
