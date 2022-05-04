@@ -100,8 +100,8 @@ int main(){
    }
    
    //Eliminación FIFO
-   if (unlink(FIFO_PATH) < 0){
-      printf("\nNo se puede borrar FIFO.\n"); }
+   //if (unlink(FIFO_PATH) < 0){
+     // printf("\nNo se puede borrar FIFO.\n"); }
       
    exit(0);
 

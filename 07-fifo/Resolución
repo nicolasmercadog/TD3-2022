@@ -1,2 +1,35 @@
-Resolución1
+1 - Se crea un archivo MI_FIFO de diferente color.
+Al descomentar las líneas se observa que la tubería se 
+ha eliminado al finalizar el proceso. 
+
+2 - Al abrir la fifo como no bloqueante la fifo se cierra 
+porque no puede leer ya que nunca escribe y sale error al 
+escribirla.
+
+Al ponerlo como O_RDWR la fifo abre y puede leer y escribir
+sin problemas
+
+3 - El problema es que el hijo se queda esperando que en la 
+tubería escriban algo porque está vacía.
+
+4 - Al crear el programa y la FIFO en el directorio tmp, este
+se queda esperando(bloqueado) hasta que alguien mande un mensaje. Desde
+el otro terminal se manda un mensaje a ese directorio y la
+fifo se desbloqua y muestra el mensaje. 
+
+5 - El programa fifo03.c es un padre que crea una fifo y además 
+crea un hijo. El padre escribe en la fifo pero el hijo no hace
+nada, sólo tiene un sleep de 5 segundos.
+
+Al abrir la fifo en modo sólo escritura, esta se bloquea hasta 
+que alguien más abra la fifo para leer lo que hay adentro.
+
+6 - En el archivo fifo04a se escribe un mensaje y se manda a la
+FIFO.
+En el archivo fifo04b se lee el mensaje que está en la FIFO.
+
+Cabe aclarar que si el archivo fifo04b empieza a leer antes de
+que fifo04a escriba, este se bloquea y como está bloqueado el 
+archivo fifo04a también se bloquea. Es decir, hay que escribir 
+primero antes de leer.
 
