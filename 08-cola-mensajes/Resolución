@@ -1,0 +1,15 @@
+2 - El objetivo de mq02 es crear mensajes para que alguien  lo lea, pero
+se abre en modo lectura y se bloquea. La solución es abrirlo en modo escritura.
+Al ponerlo en modo escritura trata de enviar mensajes indefinidamente hasta
+que alguien los lea pero no sale del bucle. Se finaliza con Ctrl+C o con kill.
+3 - Se realizó el programa mq03a.c y mq03b.c para leer y escribir un sólo 
+mensaje.
+Además se realizó mq04a.c y mq04b.c para leer y escribir varios mensajes 
+mostrando su prioridad.
+4 - Si se pone en modo No Bloqueante la escritura se envía el mensaje pero la cola
+termina con error, en el programa de lectura termina con error la cola, no lee 
+el mensaje.
+5 - Con SIGUSR1 el programa termina y no muestra ningún mensaje.
+Con SIGINT el programa envía un mensaje.
+Si recibe más de 5 mensajes se bloquea.
+Se usa el programa mq03 para leer lo que hay en la cola de mensajes.

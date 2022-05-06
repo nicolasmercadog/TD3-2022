@@ -1,5 +1,6 @@
 /*
-* Ejercicio 2 del TP de Cola de mensajes
+* Ejercicio 3 del TP de Cola de mensajes
+  Programa que leer de la cola de mensajes
 * 
 */
 
@@ -16,7 +17,8 @@
 #define MQ_PATH "/MQ_TD3" 
 
 int err, leido;
-char buff[1024];   
+unsigned int priori[20];
+char buff[40][1024];   
 mqd_t mqd; 
 struct mq_attr attr, attr_rcv;
 
@@ -44,15 +46,19 @@ void sig_user1(int a){
 
 int main() {
    
+   unsigned int nmsj=0;
+   
    signal(SIGUSR1, sig_user1); //señal para cerrar la cola de mensaje
 
    printf ("Mi pid es %d\n", getpid());
+   
+   
 
 
    attr.mq_msgsize = sizeof(buff); //tamaño máximo del mensaje
-   attr.mq_maxmsg = 5; //cantidad  máxima de mensajes 
+   //cantidad  máxima de mensajes 
 
-   mqd = mq_open(MQ_PATH, O_WRONLY | O_CREAT, 0777, &attr); //se crea una cola de mensaje pero en lectura, 
+   mqd = mq_open(MQ_PATH, O_RDONLY | O_CREAT, 0666, &attr); //se crea una cola de mensaje pero en lectura, 
    //mqd = mq_open(DireccionDeColaDeMensaje, bandera, Atributos de usuario, Atributos de cola);
    /*Bandera --> O_CREAT : Crea una cola si no existe
 	O_RDONLY  :  Sólo lectura
@@ -64,20 +70,36 @@ int main() {
       printf ("error en mq_open()");      
       exit(-1) ;}
 
-   printf("Cola de mensajes creada\n");
+   printf("Cola de mensajes abierta\n");
    
-   while(1) {
-      //envía por la cola de mensaje hasta llenar la cantidad de mensajes permitidos por la cola
-      err = mq_send(mqd, MENSAJE, strlen(MENSAJE)+1, 1);  //strlen nos da la longitud de una cadena
-      if(err == -1){
-         printf ("error en mq_send()");
-         exit(-1);}
- 
-      printf("Mensaje enviado (%d)\n", err);
+     // Se leen parametros de la cola de mensajes
+   if (mq_getattr(mqd, &attr_rcv) == -1){
+      printf ("error en mq_getattr()");
+      exit(-1); }
 
+   printf("Longitud max. de mensaje: %ld\n",attr_rcv.mq_msgsize); // se lee el tamaño máximo que puede tener un mensaje
+   printf("Nros de mensajes pendientes en cola de mensajes: %ld\n",attr_rcv.mq_curmsgs); //Se lee la cantidad de mensajes pendientes que hay en la cola
+   int cant=attr_rcv.mq_curmsgs;
+   attr.mq_maxmsg = cant;
+   for(int i=0; i<cant;i++){
+	leido = mq_receive(mqd, buff[i], attr_rcv.mq_msgsize, &priori[i]);
+	
+      	printf("Mensaje leido: %s  con prioridad %u\n", buff[i],priori[i]);
+   
+   
       sleep(1);
+   
+}
 
-   }
+ if (( leido < 0 )){
+      printf ("error en mq_receive()");
+      exit(-1); }
+      
+	//   leido = mq_receive(mqd, buff, attr_rcv.mq_msgsize, 0);
+   //leido= mq_receive(NombreDeCola, DondeGuardoElMensaje, AtributoDelMensaje, AtributoDefault);
+  
+
+
 
 
    exit(0);
