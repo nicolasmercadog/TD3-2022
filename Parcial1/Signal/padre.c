@@ -3,8 +3,7 @@
  * 
  * Comando para compilar:
  * 
- * 		gcc -c padre.c && gcc -O0 hijo.o padre.o -o padre
-
+ * 	gcc -m32 -c padre.c && gcc -m32 hijo.o padre.o -o padre
 */
 
 #include <stdio.h>
@@ -16,28 +15,22 @@
 #include <fcntl.h>
 #include <signal.h>
 
-int hijo (int fd[2], char * myfifo);
+void sg (int a){
+}
+
+
+int hijo (void);
+
 
 int main(void) 
 {
-	int fd[2];
 	int pid;
-	char tx_buffer[20] = {"HOLA HIJO MIO\0"};
-    char * myfifo = "/tmp/myfifo";
 	
-    if (pipe(fd) == -1)
-    {
-        perror("pipe");
-        return -1;
-    }
-    
-    unlink(myfifo); 
-    
-    if (mkfifo(myfifo, 0666) == -1)
-    {
-        perror("fifo");
-        return -1;
-    }
+	//inicio las señales, deben enviarse una por una
+	//cambiar la señal según sea necesario
+	//signal(SIGUSR1, sg); 
+	//signal(SIGUSR2, sg);
+	signal(SIGFPE, sg);  
     
     if ((pid = fork()) == -1)
     {
@@ -46,29 +39,27 @@ int main(void)
     }
     
 // codigo que ejecuta el hijo
-
 	if (pid==0) 
 	{ 
-        hijo(fd, myfifo);
+        hijo();
 
         return 0;
     }
-
 // codigo que ejecuta el padre   
-
 	else
 	{
 		printf("Proceso Padre en ejecucion... \n"); 
 		
 		sleep(1);
+		printf("Soy el proceso hijo. Mi PID = %d\n", getpid());		
+		
+		
+		//mata las señales, matar 1 a la vez. Cambiar la señal según sea necesario
+		//kill(pid,SIGUSR1);
+		//kill(pid,SIGUSR2);
+		kill(pid,SIGFPE);
 				
-		// **** ESCRIBIR CODIGO A PARTIR DE ESTA LINEA *****************
-		
-    
-		// *************************************************************
-		
-		wait(NULL);
-		
+		wait(NULL);	
 		return 0;
 	}
 }

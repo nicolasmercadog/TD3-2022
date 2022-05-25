@@ -30,7 +30,7 @@ int main(){
          write(STDOUT_FILENO, "\nAbriendo FIFO\n", sizeof("\nAbriendo FIFO\n"));
          write(STDOUT_FILENO, "\nEsperando a que alguien escriba en FIFO\n", sizeof("\nEsperando a que alguien escriba en FIFO\n"));
 
-	 fifo_d = open(FIFO_PATH, O_RDONLY, 0); //el hijo abre la fifo en modo lectura	
+	 fifo_d = open(FIFO_PATH, O_RDONLY, 0); //el hijo abre la fifo en modo lectura	O_RDONLY
          if(fifo_d == -1){
             write(STDOUT_FILENO, "\nError al abrir FIFO ", sizeof("\nError al abrir FIFO "));
             return -1;
