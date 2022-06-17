@@ -1,74 +1,41 @@
 /*
- * PARCIAL 1: programa para ser ejecutado en el proceso padre.
- * 
- * Comando para compilar:
- * 
- * 		gcc -c padre.c && gcc -O0 hijo.o padre.o -o padre
 
-*/
+Ej de prueba por si acaso
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
-#include <sys/wait.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <signal.h>
+#include <sys/types.h>
 
-int hijo (int fd[2], char * myfifo);
+int a[5]={0,0,0,0,0};
 
 int main(void) 
 {
-	int fd[2];
-	int pid;
-	char tx_buffer[20] = {"HOLA HIJO MIO\0"};
-    char * myfifo = "/tmp/myfifo";
-	
-    if (pipe(fd) == -1)
-    {
-        perror("pipe");
-        return -1;
-    }
-    
-    unlink(myfifo); 
-    
-    if (mkfifo(myfifo, 0666) == -1)
-    {
-        perror("fifo");
-        return -1;
-    }
-    
-    if ((pid = fork()) == -1)
-    {
-        perror("fork");
-        return -1;
-    }
-    
-// codigo que ejecuta el hijo
+for(int t=0; t<3 ; t++){
+a[t]=fork();
+}
+//sleep(10);
+printf("entrado a A");
 
-	if (pid==0) 
-	{ 
-        hijo(fd, myfifo);
-
-        return 0;
-    }
-
-// codigo que ejecuta el padre   
-
-	else
-	{
-		printf("Proceso Padre en ejecucion... \n"); 
-		
-		sleep(1);
-		
-		close(fd[0]);
-		write(fd[1], tx_buffer, strlen(tx_buffer));
-		close(fd[1]);
-		
-		
-		wait(NULL);
-		
-		return 0;
-	}
+if (a[1]==0){
+//sleep(10);
+exit(0);
+printf("Pid %d\n",getpid());
+}
+printf("Pid 2 %d\n",getpid());
+a[4]=fork();
+if(a[0]==0){
+sleep(10);
+exit(0);
+}
+printf("Pid 3 %d\n",getpid());
+//sleep(10);
+if (a[3]==0){
+//sleep(2);
+exit(0);
+}
+printf("Pid 4 %d\n",getpid());
+//sleep(10);
+exit(0);
 }
